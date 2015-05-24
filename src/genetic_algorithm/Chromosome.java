@@ -1,9 +1,10 @@
 package genetic_algorithm;
 
+import java.util.Comparator;
 import java.util.Random;
 
 
-public class Chromosome implements IChromosome
+public class Chromosome implements IChromosome, Comparable<Chromosome>
 {
     int size;
     IGene [] genes = null;
@@ -20,12 +21,23 @@ public class Chromosome implements IChromosome
     }
     
     
-    
+    public Chromosome(Chromosome ch)
+    {
+        setSize(ch.getSize());
+        for (int i = 0; i < size; i++)
+        {
+            genes[i]=new Gene((Double)ch.getGenes()[i].getValue());
+        }
+    }
     
 
     public Chromosome(int s)
     {
         setSize(s);
+        for (int i = 0; i < size; i++)
+        {
+            genes[i]=new Gene(true);//true : random
+        }
     }
 
     
@@ -91,7 +103,7 @@ public class Chromosome implements IChromosome
     @Override
     public IChromosome[] crossOver(IChromosome c2)
     {
-        int cop = new Random().nextInt(size-2);//cross over point
+        int cop = new Random().nextInt(size-1);//cross over point
         cop++;
         Chromosome [] res = new Chromosome[2];
         res[0] = new Chromosome(size);
@@ -128,10 +140,22 @@ public class Chromosome implements IChromosome
         String s = "";
         for (int i = 0; i < size; i++)
         {
-            s += "["+genes[i].getValue()+"]";
+            s += "["+Math.round((Double)genes[i].getValue())+"]";
         }
-        return "Chromosome{" + "size=" + size + ", genes= " + s + '}';
+        //return "Chromosome{" + "size=" + size + ", genes= " + s + '}';
+        return "{" + s + " "+String.format("%.03f", getFitness() ) +'}';
     }
+
+ 
+
+    @Override
+    public int compareTo(Chromosome o)
+    {
+        if(getFitness() < o.getFitness())
+            return -1;
+        if(getFitness() > o.getFitness())
+            return 1;
+        return 0;    }
     
     
     
