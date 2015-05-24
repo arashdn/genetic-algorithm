@@ -3,7 +3,6 @@ package genetic_algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Random;
 
 /**
@@ -12,7 +11,7 @@ import java.util.Random;
  */
 public class GeneticAlgorithm
 {
-    final int populationSize;
+    int populationSize;
     int crossOverRate;// Probability in persent
     int mutationRate;
     int elitismRate;
@@ -20,7 +19,24 @@ public class GeneticAlgorithm
     
     
     int repeatCount;
+    boolean addExisting;
+    
+    
+    Chromosome [] currentGeneration;
+    Chromosome [] nextGeneration;
+    
+    
+    
+    // <editor-fold defaultstate="collapsed" desc="Props">
+    public boolean isAddExisting()
+    {
+        return addExisting;
+    }
 
+    public void setAddExisting(boolean addExisting)
+    {
+        this.addExisting = addExisting;
+    }
     public int getRepeatCount()
     {
         return repeatCount;
@@ -37,8 +53,7 @@ public class GeneticAlgorithm
     }
     
     
-    Chromosome [] currentGeneration;
-    Chromosome [] nextGeneration;
+   
 
     public int getPopulationSize()
     {
@@ -89,14 +104,17 @@ public class GeneticAlgorithm
     {
         this.TournamentNumber = TournamentNumber;
     }
-
-    public GeneticAlgorithm(int populationSize, int crossOverRate, int mutationRate, int ElitismRate, int TournamentNumber)
+    //</editor-fold>
+    
+    
+    public GeneticAlgorithm(int populationSize, int crossOverRate, int mutationRate, int ElitismRate, int TournamentNumber,boolean addExist)
     {
         this.populationSize = populationSize;
         this.crossOverRate = crossOverRate;
         this.mutationRate = mutationRate;
         this.elitismRate = ElitismRate;
         this.TournamentNumber = TournamentNumber;
+        this.addExisting = addExist;
         
         repeatCount = 0;
         
@@ -156,31 +174,43 @@ public class GeneticAlgorithm
         Chromosome[] res = new Chromosome[2];
         res[0] = new Chromosome(temp[TournamentNumber-1]);
         res[1] = new Chromosome(temp[TournamentNumber-2]);
-        String s = "";
-        for (int i = TournamentNumber-1; i > 0; i--)
-        {
-            s+= temp[i].getFitness()+"  ";
-        }
-        System.out.println("Selected:"+res[0]+","+res[1]+"  in:"+s);
+//        String s = "";
+//        for (int i = TournamentNumber-1; i > 0; i--)
+//        {
+//            s+= temp[i].getFitness()+"  ";
+//        }
+        //System.out.println("Selected:"+res[0]+","+res[1]+"  in:"+s);
         return res;
     }
     
+    boolean chromosomeExist(Chromosome ch , int max)
+    {
+        for (int i = 0; i < max; i++)
+        {
+            if(nextGeneration[i].equals(ch))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     
     public void repeat()
     {
         repeatCount++;
         
-        System.out.println("\n--------------------------------------------\nRepeat: "+repeatCount);
+        //System.out.println("\n--------------------------------------------\nRepeat: "+repeatCount);
         
         Arrays.sort(currentGeneration,Collections.reverseOrder());
+        System.out.println(this.toString());
         int elitism = (populationSize*elitismRate)/100;
-        System.out.println("elitisim count: "+elitism);
-        System.out.println("current:  "+this.toString());
+        //System.out.println("elitisim count: "+elitism);
+        //System.out.println("current:  "+this.toString());
         
         for (int i = 0; i < elitism ; i++)
         {
             nextGeneration[i] = new Chromosome(currentGeneration[i]);
-            System.out.println("Elitisim: "+nextGeneration[i].toString());
+            //System.out.println("Elitisim: "+nextGeneration[i].toString());
         }
 
 
@@ -191,17 +221,19 @@ public class GeneticAlgorithm
         Chromosome [] sel;
         Chromosome [] temp;
         Chromosome ch1 , ch2;
-        for (int i = elitism; i < populationSize; i++)
+        
+        
+        int i = elitism;
+        while (i < populationSize)
         {
             cop = rnd.nextInt(100);
-            sel = new Chromosome[2];
             sel = select();
             if(cop <= crossOverRate)
             {
                 temp = (Chromosome[]) ( sel[0].crossOver(sel[1]) );
                 ch1 = temp[0];
                 ch2 = temp[1];
-                System.out.println("CO= "+ch1+","+ ch2 + "From: "+sel[0]+","+sel[1]);
+                //System.out.println("CO= "+ch1+","+ ch2 + "From: "+sel[0]+","+sel[1]);
                 //System.out.println("CO: "+ch2);
                 
             }
@@ -216,28 +248,37 @@ public class GeneticAlgorithm
             {
                 ch1.mutate();
             }
-            nextGeneration[i]= new Chromosome(ch1);
-            System.out.println("added: "+nextGeneration[i]);
-            if(++i<populationSize)
+            if(addExisting || !chromosomeExist(ch1, i))
             {
-                nextGeneration[i]= new Chromosome(ch2);
-                System.out.println("added: "+nextGeneration[i]);
+                nextGeneration[i]= new Chromosome(ch1);
+                i++;
             }
+            //System.out.println("added: "+nextGeneration[i]);
+            if(i<populationSize)
+            {
+                if(addExisting || !chromosomeExist(ch2, i))
+                {
+                    nextGeneration[i]= new Chromosome(ch2);
+                    i++;
+                }
+                //System.out.println("added: "+nextGeneration[i]);
+            }
+            
         }//for
-        System.out.println("next gen:");
-        for (int i = 0; i < populationSize; i++)
+        //System.out.println("next gen:");
+        for (i = 0; i < populationSize; i++)
         {
-            System.out.print(nextGeneration[i]+"  ");
+            //System.out.print(nextGeneration[i]+"  ");
             currentGeneration[i] = new Chromosome(nextGeneration[i]);
         }
-        System.out.println("after copy:"+this.toString());
+        
     }//repeat
 
     @Override
     public String toString()
     {
         String s = "";
-        for (int i = 0; i < populationSize; i++)
+        for (int i = 0; i < 10; i++)
         {
             s += currentGeneration[i].toString()+"   ";
         }
@@ -249,8 +290,8 @@ public class GeneticAlgorithm
                 ", TournamentNumber=" + TournamentNumber + 
                 ", repeatCount=" + repeatCount +
                 ", currentGeneration=\n" + s + 
-                "\nAvg fitness: "+String.format("%.04f", getFitnessAverage())+ 
-                " Best : "+getBestChromosome().toString()+"  F: "+'}';
+                "\nAvg fitness: "+String.format("%.05f", getFitnessAverage())+ 
+                " Best : "+getBestChromosome().toString()+'}';
     }
     
     

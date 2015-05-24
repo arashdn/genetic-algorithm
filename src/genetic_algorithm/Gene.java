@@ -6,9 +6,9 @@ public class Gene implements IGene<Double>
 {
 
     Double value;
-    public static int minValue = -400;
-    public static int maxValue = 400;
-    public static int points = 2;
+    public static int minValue = -100;
+    public static int maxValue = 100;
+    public static int points = 0;
 
     public Gene()
     {
