@@ -141,8 +141,9 @@ public class Chromosome implements IChromosome, Comparable<Chromosome>
         String s = "";
         for (int i = 0; i < size; i++)
         {
-            s += "["+genes[i].getValue()+"]";
-            //s += "["+Math.round((Double)genes[i].getValue())+"]";
+            s += "["+String.format("%.0"+Gene.points+"f", genes[i].getValue() )+"]";
+            //s += "["+genes[i].getValue()+"]";
+            
         }
         //return "Chromosome{" + "size=" + size + ", genes= " + s + '}';
         return "{" + s + " "+String.format("%.03f", getFitness() ) +'}';
@@ -164,14 +165,14 @@ public class Chromosome implements IChromosome, Comparable<Chromosome>
     @Override
     public boolean equals(Object obj)
     {
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
+//        if (obj == null)
+//        {
+//            return false;
+//        }
+//        if (getClass() != obj.getClass())
+//        {
+//            return false;
+//        }
         final Chromosome other = (Chromosome) obj;
         if (this.size != other.size)
         {
