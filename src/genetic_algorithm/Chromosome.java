@@ -7,9 +7,27 @@ import java.util.Random;
 
 public class Chromosome implements IChromosome, Comparable<Chromosome>
 {
+
+    public static final int CO_TYPE_SINGLE_POINT = 1;
+    public static final int CO_TYPE_DOUBLE_POINT = 2;
+    
     int size;
     IGene [] genes = null;
     private static Polynomial polynomial = null;
+    private static int crossOverType = CO_TYPE_SINGLE_POINT;
+    
+
+    public static int getCrossOverType()
+    {
+        return crossOverType;
+    }
+
+    public static void setCrossOverType(int crossOverType)
+    {
+        Chromosome.crossOverType = crossOverType;
+    }
+    
+    
 
     public static Polynomial getPolynomial()
     {
@@ -104,6 +122,17 @@ public class Chromosome implements IChromosome, Comparable<Chromosome>
     @Override
     public IChromosome[] crossOver(IChromosome c2)
     {
+        if(Chromosome.getCrossOverType()==CO_TYPE_SINGLE_POINT)
+            return singlePointCrossOver(c2);
+        else if(Chromosome.getCrossOverType()==CO_TYPE_DOUBLE_POINT)
+            return doublePointCrossOver(c2);
+        else
+            throw new NoSuchMethodError("no such cross over type");
+    }
+    
+    
+    private IChromosome[] singlePointCrossOver(IChromosome c2)
+    {
         int cop = new Random().nextInt(size-1);//cross over point
         cop++;
         Chromosome [] res = new Chromosome[2];
@@ -119,6 +148,46 @@ public class Chromosome implements IChromosome, Comparable<Chromosome>
             res[0].setGene(i, new Gene((double)getGene(i).getValue()));
             res[1].setGene(i, new Gene((double)c2.getGene(i).getValue()));
         }
+        return res;
+    }
+    
+    
+    private IChromosome[] doublePointCrossOver(IChromosome c2)
+    {
+        int cop1,cop2;
+        do
+        {
+            cop1 = new Random().nextInt(size-1);//cross over point
+            cop2 = new Random().nextInt(size-1);//cross over point
+        }
+        while (cop1==cop2);
+        
+        if(cop1>cop2)
+        {
+            int temp = cop1;
+            cop1 = cop2;
+            cop2 = temp;
+        }
+        
+        Chromosome [] res = new Chromosome[2];
+        res[0] = new Chromosome(size);
+        res[1] = new Chromosome(size);
+        for (int i = 0; i < cop1; i++)
+        {
+            res[0].setGene(i, new Gene((double)getGene(i).getValue()));
+            res[1].setGene(i, new Gene((double)c2.getGene(i).getValue()));
+        }
+        for (int i = cop1; i < cop2; i++)
+        {
+            res[0].setGene(i, new Gene((double)c2.getGene(i).getValue()));
+            res[1].setGene(i, new Gene((double)getGene(i).getValue()));
+        }
+        for (int i = cop2; i < size; i++)
+        {
+            res[0].setGene(i, new Gene((double)getGene(i).getValue()));
+            res[1].setGene(i, new Gene((double)c2.getGene(i).getValue()));
+        }
+        //System.out.println("Co Result: "+res[0]+" , "+res[1]+"  from: "+toString()+" , "+c2);
         return res;
     }
 

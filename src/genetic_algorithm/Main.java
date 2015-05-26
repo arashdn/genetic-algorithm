@@ -12,16 +12,22 @@ public class Main
         pn.add(5.0, 2);
         pn.add(20.0, 1);
         pn.add(-3.0, 5);
+        pn.add(12.0, 3);
+        pn.add(7.0, 2);
+        pn.add(13.0, 3);
+        pn.add(-9.0, 4);
         
         Chromosome.setPolynomial(pn);
 
-        Gene.maxValue = 50;
-        Gene.minValue = -50;
+        Gene.maxValue = 100;
+        Gene.minValue = -100;
         Gene.points = 1;
         
         int generations = 100;
         
-        GeneticAlgorithm ga = new GeneticAlgorithm(600, 75, 60, 1, 30,false);
+        Chromosome.setCrossOverType(Chromosome.CO_TYPE_DOUBLE_POINT);
+        
+        GeneticAlgorithm ga = new GeneticAlgorithm(600, 75, 30, 1, 30,false);
         System.out.println(ga.toString());
         
         for (int i = 0; i < generations; i++)
