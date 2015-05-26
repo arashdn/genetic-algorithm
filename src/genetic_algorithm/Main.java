@@ -10,7 +10,7 @@ public class Main
     {
         Polynomial pn = new Polynomial();
         pn.add(5.0, 2);
-        pn.add(20.0, 1);
+        pn.add(12.0, 1);
         pn.add(-3.0, 5);
         pn.add(12.0, 3);
         pn.add(7.0, 2);
@@ -19,13 +19,14 @@ public class Main
         
         Chromosome.setPolynomial(pn);
 
-        Gene.maxValue = 100;
-        Gene.minValue = -100;
+        Gene.maxValue = 50;
+        Gene.minValue = -50;
         Gene.points = 1;
         
         int generations = 100;
         
         Chromosome.setCrossOverType(Chromosome.CO_TYPE_DOUBLE_POINT);
+        GeneticAlgorithm.setSelectionType(GeneticAlgorithm.SELECTION_TYPE_ROULETTE);
         
         GeneticAlgorithm ga = new GeneticAlgorithm(600, 75, 30, 1, 30,false);
         System.out.println(ga.toString());

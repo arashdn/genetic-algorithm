@@ -11,6 +11,12 @@ import java.util.Random;
  */
 public class GeneticAlgorithm
 {
+    
+    public static final int SELECTION_TYPE_TOURNAMENT = 1;
+    public static final int SELECTION_TYPE_ROULETTE = 2;
+    
+    
+    
     int populationSize;
     int crossOverRate;// Probability in persent
     int mutationRate;
@@ -22,12 +28,32 @@ public class GeneticAlgorithm
     boolean addExisting;
     
     
+    private Random random = new Random();
+    
+    
     Chromosome [] currentGeneration;
     Chromosome [] nextGeneration;
     
-    
+    static int selectionType = SELECTION_TYPE_TOURNAMENT;
     
     // <editor-fold defaultstate="collapsed" desc="Props">
+
+    public static int getSelectionType()
+    {
+        return selectionType;
+    }
+
+    public static void setSelectionType(int selectionType)
+    {
+        GeneticAlgorithm.selectionType = selectionType;
+    }
+
+    
+    
+    
+    
+    
+    
     public boolean isAddExisting()
     {
         return addExisting;
@@ -155,7 +181,18 @@ public class GeneticAlgorithm
         return temp;
     }
     
+    
     private Chromosome[] select()
+    {
+        if(GeneticAlgorithm.getSelectionType() == SELECTION_TYPE_TOURNAMENT)
+            return tournament();
+        else if(GeneticAlgorithm.getSelectionType() == SELECTION_TYPE_ROULETTE)
+            return roulette();
+        else
+            throw new NoSuchMethodError("no such selection type");
+    }
+    
+    private Chromosome[] tournament()
     {
         Chromosome[] temp = new Chromosome[TournamentNumber];
         
@@ -181,6 +218,66 @@ public class GeneticAlgorithm
 //        }
         //System.out.println("Selected:"+res[0]+","+res[1]+"  in:"+s);
         return res;
+    }
+    
+    private Chromosome[] roulette ()
+    {
+        double sum = 0;
+        for (int i = 0; i < populationSize; i++)
+        {
+            sum += currentGeneration[i].getFitness();
+        }
+        
+        double rnd1,rnd2;
+        
+        Chromosome[] res = new Chromosome[2];
+        
+        do
+        {
+            rnd1 = this.random.nextDouble(); //[0-1];
+            rnd1 *=sum;//number will be in 0-sum
+            rnd2 = this.random.nextDouble(); //[0-1];
+            rnd2 *=sum;//number will be in 0-sum
+            
+            if(rnd1>rnd2)
+            {
+                double temp = rnd2;
+                rnd2 = rnd1;
+                rnd1 = temp;
+            }
+            
+            double temp = 0;
+            int i=0;
+            res[0] = null;
+            res[1] = null;
+            //System.out.println("sum: "+sum+" , rnd1: "+rnd1+" , rnd2: "+rnd2);
+            while(temp <= rnd2)
+            {
+                temp += currentGeneration[i].getFitness();
+                if(temp > rnd1)
+                {
+                    res[0] = new Chromosome(currentGeneration[i]);
+                    rnd1 = sum+1;//value will never change
+                }
+                i++;
+            }
+            if(res[0] == null)//both chromosomes are same
+            {
+                //System.out.println("tekrar");
+                continue;
+                
+            }
+            res[1] = new Chromosome(currentGeneration[--i]);
+            
+        }
+        while (res[0].equals(res[1]));
+        
+        //System.out.println("done");
+        
+        return res;
+        
+        
+        
     }
     
     boolean chromosomeExist(Chromosome ch , int max)
@@ -217,7 +314,7 @@ public class GeneticAlgorithm
         
         int cop = 0;//Cross Over Probability
         int mp;//mutation Probability
-        Random rnd = new Random();
+        //Random rnd = new Random();
         Chromosome [] sel;
         Chromosome [] temp;
         Chromosome ch1 , ch2;
@@ -226,7 +323,7 @@ public class GeneticAlgorithm
         int i = elitism;
         while (i < populationSize)
         {
-            cop = rnd.nextInt(100);
+            cop = this.random.nextInt(100);
             sel = select();
             if(cop <= crossOverRate)
             {
@@ -243,7 +340,7 @@ public class GeneticAlgorithm
                 ch2 = new Chromosome(sel[1]);
             }
             
-            mp = rnd.nextInt(100);
+            mp = this.random.nextInt(100);
             if(mp< mutationRate)
             {
                 ch1.mutate();
