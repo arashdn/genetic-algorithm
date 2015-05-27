@@ -27,8 +27,9 @@ public class Main
         
         Chromosome.setCrossOverType(Chromosome.CO_TYPE_DOUBLE_POINT);
         GeneticAlgorithm.setSelectionType(GeneticAlgorithm.SELECTION_TYPE_ROULETTE);
+        GeneticAlgorithm.setAddExisting(false);
         
-        GeneticAlgorithm ga = new GeneticAlgorithm(600, 75, 30, 1, 30,false);
+        GeneticAlgorithm ga = new GeneticAlgorithm(600, 75, 30, 1, 30);
         System.out.println(ga.toString());
         
         for (int i = 0; i < generations; i++)

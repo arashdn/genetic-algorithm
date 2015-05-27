@@ -25,7 +25,7 @@ public class GeneticAlgorithm
     
     
     int repeatCount;
-    boolean addExisting;
+    static boolean addExisting=true;
     
     
     private Random random = new Random();
@@ -54,14 +54,14 @@ public class GeneticAlgorithm
     
     
     
-    public boolean isAddExisting()
+    public static boolean isAddExisting()
     {
         return addExisting;
     }
 
-    public void setAddExisting(boolean addExisting)
+    public static void setAddExisting(boolean _addExisting)
     {
-        this.addExisting = addExisting;
+        GeneticAlgorithm.addExisting = _addExisting;
     }
     public int getRepeatCount()
     {
@@ -133,14 +133,13 @@ public class GeneticAlgorithm
     //</editor-fold>
     
     
-    public GeneticAlgorithm(int populationSize, int crossOverRate, int mutationRate, int ElitismRate, int TournamentNumber,boolean addExist)
+    public GeneticAlgorithm(int populationSize, int crossOverRate, int mutationRate, int ElitismRate, int TournamentNumber)
     {
         this.populationSize = populationSize;
         this.crossOverRate = crossOverRate;
         this.mutationRate = mutationRate;
         this.elitismRate = ElitismRate;
         this.TournamentNumber = TournamentNumber;
-        this.addExisting = addExist;
         
         repeatCount = 0;
         
