@@ -165,7 +165,7 @@ public class Main
         lineXAxis.setLabel("Generation");
         LineChart barChart = new LineChart(lineXAxis,lineYAxis);
         barChart.setMinSize(800, 600);
-        
+        barChart.setCreateSymbols(false);
 
         XYChart.Series [] bar = new XYChart.Series[names.length];
         
