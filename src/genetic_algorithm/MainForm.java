@@ -6,13 +6,18 @@
 
 package genetic_algorithm;
 
-import javax.swing.JOptionPane;
+import java.awt.Dimension;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
+import javafx.scene.effect.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.*;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -24,9 +29,22 @@ public class MainForm extends javax.swing.JFrame
     /**
      * Creates new form MainForm
      */
+    
+    final int maxTypes = 8;
+    String [] names;
+    
     public MainForm()
     {
         initComponents();
+        names = new String[maxTypes];
+        jCheckBox1.setText(names[0] = "Single CO - Tournament - Allow Repetitive");
+        jCheckBox2.setText(names[1] = "Single CO - Tournament - Not Repetitive");
+        jCheckBox3.setText(names[2] = "Single CO - Roulete - Allow Repetitive");
+        jCheckBox4.setText(names[3] = "Single CO - Roulete - NOT Repetitive");
+        jCheckBox5.setText(names[4] = "Double CO - Tournament - Allow Repetitive");
+        jCheckBox6.setText(names[5] = "Double CO - Tournament - Not Repetitive");
+        jCheckBox7.setText(names[6] = "Double CO - Roulete - Allow Repetitive");
+        jCheckBox8.setText(names[7] = "Double CO - Roulete - NOT Repetitive");
     }
 
     /**
@@ -80,7 +98,7 @@ public class MainForm extends javax.swing.JFrame
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jSpinner1.setValue(2000);
+        jSpinner1.setValue(3000);
 
         jLabel1.setText("Population Size");
 
@@ -252,7 +270,7 @@ public class MainForm extends javax.swing.JFrame
 
         jTextField1.setText("8,3,5,1,7,1,4,5");
 
-        jTextField2.setText("7,-20,11,3,0,9,-4,6");
+        jTextField2.setText("7,-2,11,3,0,9,-4,6");
 
         jLabel10.setText("Powers");
 
@@ -431,10 +449,8 @@ public class MainForm extends javax.swing.JFrame
         
         int tournamentChromosomes = Integer.parseInt(jSpinner9.getValue().toString());
         
-        final int maxTypes = 8;
         double [][] best = new double[maxTypes][generations];
         double [][] avg = new double[maxTypes][generations];
-        String [] names = new String[maxTypes];
         
         
         boolean [] checks = new boolean[maxTypes];
@@ -460,49 +476,41 @@ public class MainForm extends javax.swing.JFrame
                         Chromosome.setCrossOverType(Chromosome.CO_TYPE_SINGLE_POINT);
                         GeneticAlgorithm.setSelectionType(GeneticAlgorithm.SELECTION_TYPE_TOURNAMENT);
                         GeneticAlgorithm.setAddExisting(true);
-                        names[j] = "Single CO - Tournament - Allow Repetitive";
                         break;
                     case 1:
                         Chromosome.setCrossOverType(Chromosome.CO_TYPE_SINGLE_POINT);
                         GeneticAlgorithm.setSelectionType(GeneticAlgorithm.SELECTION_TYPE_TOURNAMENT);
                         GeneticAlgorithm.setAddExisting(false);
-                        names[j] = "Single CO - Tournament - Not Repetitive";
                         break;
                     case 2:
                         Chromosome.setCrossOverType(Chromosome.CO_TYPE_SINGLE_POINT);
                         GeneticAlgorithm.setSelectionType(GeneticAlgorithm.SELECTION_TYPE_ROULETTE);
                         GeneticAlgorithm.setAddExisting(true);
-                        names[j] = "Single CO - Roulete - Allow Repetitive";
                         break;
                     case 3:
                         Chromosome.setCrossOverType(Chromosome.CO_TYPE_SINGLE_POINT);
                         GeneticAlgorithm.setSelectionType(GeneticAlgorithm.SELECTION_TYPE_ROULETTE);
                         GeneticAlgorithm.setAddExisting(false);
-                        names[j] = "Single CO - Roulete - NOT Repetitive";
                         break;
                     case 4:
                         Chromosome.setCrossOverType(Chromosome.CO_TYPE_DOUBLE_POINT);
                         GeneticAlgorithm.setSelectionType(GeneticAlgorithm.SELECTION_TYPE_TOURNAMENT);
                         GeneticAlgorithm.setAddExisting(true);
-                        names[j] = "Double CO - Tournament - Allow Repetitive";
                         break;
                     case 5:
                         Chromosome.setCrossOverType(Chromosome.CO_TYPE_DOUBLE_POINT);
                         GeneticAlgorithm.setSelectionType(GeneticAlgorithm.SELECTION_TYPE_TOURNAMENT);
                         GeneticAlgorithm.setAddExisting(false);
-                        names[j] = "Double CO - Tournament - Not Repetitive";
                         break;
                     case 6:
                         Chromosome.setCrossOverType(Chromosome.CO_TYPE_DOUBLE_POINT);
                         GeneticAlgorithm.setSelectionType(GeneticAlgorithm.SELECTION_TYPE_ROULETTE);
                         GeneticAlgorithm.setAddExisting(true);
-                        names[j] = "Double CO - Roulete - Allow Repetitive";
                         break;
                     case 7:
                         Chromosome.setCrossOverType(Chromosome.CO_TYPE_DOUBLE_POINT);
                         GeneticAlgorithm.setSelectionType(GeneticAlgorithm.SELECTION_TYPE_ROULETTE);
                         GeneticAlgorithm.setAddExisting(false);
-                        names[j] = "Double CO - Roulete - NOT Repetitive";
                         break;
                 }
 
@@ -519,82 +527,156 @@ public class MainForm extends javax.swing.JFrame
         
         /////////////////GUI//////////////////
         JFrame frame = new JFrame("Chart for Best Fitness");
-        final JFXPanel fxPanel = new JFXPanel();
-        frame.add(fxPanel);
-        frame.setSize(800, 630);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        JFXPanel fxPanel = new JFXPanel();
+//        frame.add(fxPanel);
+//        frame.setSize(800, 630);
+//        frame.setVisible(true);
+//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         
         
         JFrame frame2 = new JFrame("Chart for Average Fitness");
-        final JFXPanel fxPanel2 = new JFXPanel();
-        frame2.add(fxPanel2);
-        frame2.setSize(800, 630);
-        frame2.setVisible(true);
-        frame2.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        JFXPanel fxPanel2 = new JFXPanel();
+//        frame2.add(fxPanel2);
+//        frame2.setSize(800, 630);
+//        frame2.setVisible(true);
+//        frame2.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
-
-
+        //JPanel panel = new JPanel(null);
+        //fxPanel.setLocation(0, 0);
+        //fxPanel2.setLocation(650, 650);
+        //frame.add(fxPanel);
+        //frame.add(fxPanel2);
+        //frame.setPreferredSize(new Dimension(2000,2000));
+//        frame.add(panel);
+        //frame.setVisible(true);
+        ResultForm rf = new ResultForm(fxPanel);
+        rf.setVisible(true);
+        
         Platform.runLater(new Runnable() 
         {
             @Override
             public void run() 
             {
-                Scene scene = createChart(best,names);
+                Scene scene = createTwoCharts(avg,best,names);
                 fxPanel.setScene(scene);
-                Scene scene2 = createChart(avg,names);
-                fxPanel2.setScene(scene2);
+                //Scene scene2 = createChart(avg,names);
+                //fxPanel2.setScene(scene2);
             }
         });
         
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[])
+    
+    
+    Scene createTwoCharts2(double [][] avg , double [][] best , String [] names)
     {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try
-        {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
-            {
-                if ("Nimbus".equals(info.getName()))
-                {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex)
-        {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex)
-        {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex)
-        {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex)
-        {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        final Group rootGroup = new Group();
+      final Scene scene =
+         new Scene(rootGroup, 800, 400, Color.BEIGE);
+ 
+      final Text text1 = new Text(25, 25, "(2007) JavaFX based on F3");
+      text1.setFill(Color.CHOCOLATE);
+      text1.setFont(Font.font(java.awt.Font.SERIF, 25));
+      rootGroup.getChildren().add(text1);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable()
+      final Text text2 = new Text(25, 50, "(2010) JavaFX Script Deprecated");
+      text2.setFill(Color.DARKBLUE);
+      text2.setFont(Font.font(java.awt.Font.SANS_SERIF, 30));
+      rootGroup.getChildren().add(text2);
+
+      final Text text3 = new Text(25, 75, "(2011) JavaFX to be Open Sourced!");
+      text3.setFill(Color.TEAL);
+      text3.setFont(Font.font(java.awt.Font.MONOSPACED, 35));
+      rootGroup.getChildren().add(text3);
+
+      final Text text4 = new Text(25, 125, "(2011) JavaFX to be Standardized");
+      text4.setFill(Color.CRIMSON);
+      text4.setFont(Font.font(java.awt.Font.DIALOG, 40));
+      final Effect glow = new Glow(1.0);
+      text4.setEffect(glow);
+      rootGroup.getChildren().add(text4);
+
+      final Text text5 = new Text(25, 1005, "(Now) Time for JavaFX 2.0!");
+      text5.setFill(Color.DARKVIOLET);
+      text5.setFont(Font.font(java.awt.Font.SERIF, FontWeight.EXTRA_BOLD, 45));
+      final Light.Distant light = new Light.Distant();
+      light.setAzimuth(-135.0);
+      final Lighting lighting = new Lighting();
+      lighting.setLight(light);
+      lighting.setSurfaceScale(9.0);
+      text5.setEffect(lighting);
+      rootGroup.getChildren().add(text5);
+
+      final Text text6 = new Text(25, 225, "JavaFX News at JavaOne!");
+      text6.setFill(Color.DARKGREEN);
+      text6.setBlendMode(BlendMode.COLOR_BURN);
+      text6.setFont(Font.font(java.awt.Font.DIALOG_INPUT, FontWeight.THIN, 45));
+      final Reflection reflection = new Reflection();
+      reflection.setFraction(1.0);
+      text6.setEffect(reflection);
+      rootGroup.getChildren().add(text6);
+      return scene;
+    }
+    Scene createTwoCharts(double [][] avg , double [][] best , String [] names)
+    {
+        Group g = createChart(best,names);
+        NumberAxis lineYAxis= new NumberAxis();
+        CategoryAxis lineXAxis = new CategoryAxis();
+        lineYAxis.setLabel("Fitness");
+        lineXAxis.setLabel("Generation");
+        LineChart barChart = new LineChart(lineXAxis,lineYAxis);
+        barChart.setMinSize(800, 600);
+        barChart.setCreateSymbols(false);
+
+        XYChart.Series [] bar = new XYChart.Series[names.length];
+        
+        for (int j = 0; j < names.length; j++)
         {
-            public void run()
+            bar[j] = new XYChart.Series<>();
+            bar[j].setName(names[j]);
+
+            for (int i = 0; i < avg[j].length ; i++) 
             {
-                new MainForm().setVisible(true);
+                bar[j].getData().add(getChartData(avg[j][i], ""+(i+1)));
             }
-        });
+            barChart.getData().addAll(bar[j]);
+        }
+        
+        barChart.setLayoutY(700);
+        
+        
+      final Text text = new Text(5, 100, "Best Fitness:");
+      text.setFill(Color.DARKVIOLET);
+      text.setFont(Font.font(java.awt.Font.SERIF, FontWeight.EXTRA_BOLD, 30));
+      final Light.Distant light = new Light.Distant();
+      light.setAzimuth(-135.0);
+      final Lighting lighting = new Lighting();
+      lighting.setLight(light);
+      lighting.setSurfaceScale(9.0);
+      text.setEffect(lighting);
+      text.setLayoutY(-55);
+      g.getChildren().add(text);
+      
+      
+      
+      
+      
+      final Text text2 = new Text(5, 100, "Aerage Fitness:");
+      text2.setFill(Color.DARKVIOLET);
+      text2.setFont(Font.font(java.awt.Font.SERIF, FontWeight.EXTRA_BOLD, 30));
+      text2.setEffect(lighting);
+      text2.setLayoutY(600);
+      g.getChildren().add(text2);
+        
+        g.getChildren().add(barChart);
+        Scene  scene  =  new  Scene(g, javafx.scene.paint.Color.ALICEBLUE);
+        return scene;
     }
     
-        private static XYChart.Data getChartData(double x, String y) 
+    
+    
+    private static XYChart.Data getChartData(double x, String y) 
     {
         XYChart.Data data = new XYChart.Data<>();
         data.setYValue(x);
@@ -602,10 +684,10 @@ public class MainForm extends javax.swing.JFrame
         return data;
     }
     
-    private static Scene createChart(double [][] inp , String [] names)
+    private static Group createChart(double [][] inp , String [] names)
     {
         Group  root  =  new  Group();
-        Scene  scene  =  new  Scene(root, javafx.scene.paint.Color.ALICEBLUE);
+        //Scene  scene  =  new  Scene(root, javafx.scene.paint.Color.ALICEBLUE);
 
 
         NumberAxis lineYAxis= new NumberAxis();
@@ -630,10 +712,11 @@ public class MainForm extends javax.swing.JFrame
             barChart.getData().addAll(bar[j]);
         }
         
-        
+        barChart.setLayoutY(40);
         root.getChildren().add(barChart);
-
-        return (scene);
+        
+        //return (scene);
+        return root;
     }
     
     

@@ -331,6 +331,11 @@ public class GeneticAlgorithm
                 ch2 = temp[1];
                 //System.out.println("CO= "+ch1+","+ ch2 + "From: "+sel[0]+","+sel[1]);
                 //System.out.println("CO: "+ch2);
+                mp = this.random.nextInt(100);
+                if(mp<= mutationRate)
+                {
+                    ch1.mutate();
+                }
                 
             }
             else
@@ -339,11 +344,7 @@ public class GeneticAlgorithm
                 ch2 = new Chromosome(sel[1]);
             }
             
-            mp = this.random.nextInt(100);
-            if(mp< mutationRate)
-            {
-                ch1.mutate();
-            }
+            
             if(addExisting || !chromosomeExist(ch1, i))
             {
                 nextGeneration[i]= new Chromosome(ch1);
@@ -387,7 +388,7 @@ public class GeneticAlgorithm
                 ", repeatCount=" + repeatCount +
                 ", currentGeneration=\n" + s + 
                 "\nAvg fitness: "+String.format("%.05f", getFitnessAverage())+ 
-                " Best : "+getBestChromosome().toString()+'}';
+                " Best : "+getBestChromosome().toString()+"Result: "+(1/getBestChromosome().getFitness())+'}';
     }
     
     
