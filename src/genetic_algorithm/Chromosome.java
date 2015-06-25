@@ -85,6 +85,19 @@ public class Chromosome implements IChromosome, Comparable<Chromosome>
         this.genes = genes;
     }
     
+    public double[] getGenesValue() throws NullPointerException , ArrayIndexOutOfBoundsException
+    {
+        if(genes == null)
+            throw new NullPointerException("Genes are empty");
+        int gsize = genes.length;
+        double[] res = new double[gsize];
+        for (int i = 0; i < gsize; i++)
+        {
+            res[i] = (double)genes[i].getValue();
+        }
+        return res;
+    }
+    
     @Override
     public IGene getGene(int i) throws NullPointerException , ArrayIndexOutOfBoundsException
     {

@@ -3,21 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package genetic_algorithm;
 
-import java.awt.Dimension;
+import java.text.DecimalFormat;
+import java.util.Arrays;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
+import javafx.scene.control.*;//table
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.effect.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
-import javax.swing.JFrame;
+import javafx.util.Callback;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 /**
  *
@@ -29,10 +34,9 @@ public class MainForm extends javax.swing.JFrame
     /**
      * Creates new form MainForm
      */
-    
     final int maxTypes = 8;
-    String [] names;
-    
+    String[] names;
+
     public MainForm()
     {
         initComponents();
@@ -45,6 +49,7 @@ public class MainForm extends javax.swing.JFrame
         jCheckBox6.setText(names[5] = "Double CO - Tournament - Not Repetitive");
         jCheckBox7.setText(names[6] = "Double CO - Roulete - Allow Repetitive");
         jCheckBox8.setText(names[7] = "Double CO - Roulete - NOT Repetitive");
+        previewPolynomial();
     }
 
     /**
@@ -92,19 +97,20 @@ public class MainForm extends javax.swing.JFrame
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jSpinner7 = new javax.swing.JSpinner();
+        jCheckBox9 = new javax.swing.JCheckBox();
         jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jSpinner1.setValue(3000);
+        jSpinner1.setValue(2000);
 
         jLabel1.setText("Population Size");
 
         jLabel2.setText("Generations");
 
-        jSpinner2.setValue(50);
+        jSpinner2.setValue(30);
 
         jLabel9.setText("Chromosomes in Tournament");
 
@@ -128,7 +134,7 @@ public class MainForm extends javax.swing.JFrame
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSpinner9, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)))
+                        .addComponent(jSpinner9)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -149,7 +155,7 @@ public class MainForm extends javax.swing.JFrame
                 .addContainerGap(50, Short.MAX_VALUE))
         );
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Run");
         jButton1.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -164,9 +170,9 @@ public class MainForm extends javax.swing.JFrame
 
         jLabel3.setText("Crossover Probability(%)");
 
-        jSpinner3.setValue(75);
+        jSpinner3.setValue(85);
 
-        jSpinner4.setValue(60);
+        jSpinner4.setValue(20);
 
         jSpinner8.setValue(1);
 
@@ -211,6 +217,7 @@ public class MainForm extends javax.swing.JFrame
 
         jCheckBox1.setText("jCheckBox1");
 
+        jCheckBox2.setSelected(true);
         jCheckBox2.setText("jCheckBox2");
 
         jCheckBox3.setText("jCheckBox3");
@@ -219,6 +226,7 @@ public class MainForm extends javax.swing.JFrame
 
         jCheckBox5.setText("jCheckBox5");
 
+        jCheckBox6.setSelected(true);
         jCheckBox6.setText("jCheckBox6");
 
         jCheckBox7.setText("jCheckBox7");
@@ -236,14 +244,10 @@ public class MainForm extends javax.swing.JFrame
                     .addComponent(jCheckBox3)
                     .addComponent(jCheckBox4)
                     .addComponent(jCheckBox5)
-                    .addComponent(jCheckBox6))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jCheckBox6)
                     .addComponent(jCheckBox7)
                     .addComponent(jCheckBox8))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 182, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,14 +267,29 @@ public class MainForm extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jCheckBox8))
+                .addComponent(jCheckBox8)
+                .addContainerGap())
         );
 
         jPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
-        jTextField1.setText("8,3,5,1,7,1,4,5");
+        jTextField1.setText("8,3,5,1,7,1");
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jTextField1KeyReleased(evt);
+            }
+        });
 
-        jTextField2.setText("7,-2,11,3,0,9,-4,6");
+        jTextField2.setText("7,-2,11,3,0,9");
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jTextField2KeyReleased(evt);
+            }
+        });
 
         jLabel10.setText("Powers");
 
@@ -287,6 +306,9 @@ public class MainForm extends javax.swing.JFrame
         jLabel7.setText("Decimal Points:");
 
         jSpinner7.setValue(1);
+
+        jCheckBox9.setSelected(true);
+        jCheckBox9.setText("Display Result Instead of Fitness in Table");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -305,18 +327,21 @@ public class MainForm extends javax.swing.JFrame
                                 .addGap(18, 18, 18)))
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField1)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)))
+                            .addComponent(jTextField2)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSpinner5)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jSpinner5, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
                             .addComponent(jSpinner6)
-                            .addComponent(jSpinner7, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jSpinner7))))
                 .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jCheckBox9)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,13 +363,15 @@ public class MainForm extends javax.swing.JFrame
                     .addComponent(jLabel6)
                     .addComponent(jSpinner6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel7)
-                    .addComponent(jSpinner7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jSpinner7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addComponent(jCheckBox9)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel12.setText("jLabel12");
+        jLabel12.setText("Equation");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -355,34 +382,29 @@ public class MainForm extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 22, Short.MAX_VALUE))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addGap(16, 16, 16))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)))
+                .addGap(41, 41, 41))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jLabel12))
@@ -392,29 +414,97 @@ public class MainForm extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    String displayPolynomial(Polynomial pn)
+    String textPolynomial(Polynomial pn , double [] values)
     {
-        String res="<html>";
+        if (values.length != pn.getSize())
+            return "Not correct values";
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(2);
+        df.setMinimumIntegerDigits(1);
+        //String res = "<html>";
+        String res = "";
+        int i = 0;
         for (Mononomial mn : pn.lst)
         {
-            if(mn.getCoefficient()>=0)
-                res+="+";
-            res += mn.getCoefficient()+"<sup>"+mn.getPower()+"</sup>&nbsp;";
+            
+            if (mn.getCoefficient() > 0)
+            {
+                res += "+";
+            }
+            if (mn.getCoefficient() != 0)
+            {
+                res += df.format(mn.getCoefficient()) +"("+ df.format(values[i])+")"+ "<sup>" + mn.getPower() + "</sup>&nbsp;";
+            } 
+            i++;
+        }
+        //res += "</html>";
+        df.setMaximumFractionDigits(5);
+        res += "&nbsp;&nbsp; = &nbsp;&nbsp;"+df.format(pn.getValue(values));
+        return res;
+    }
+
+    String displayPolynomial(Polynomial pn)
+    {
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(2);
+        df.setMinimumIntegerDigits(1);
+        String res = "<html>";
+        int i = 0;
+        for (Mononomial mn : pn.lst)
+        {
+            i++;
+            if (mn.getCoefficient() > 0)
+            {
+                res += "+";
+            }
+            if (mn.getCoefficient() != 0)
+            {
+                res += df.format(mn.getCoefficient()) + "X"+ "<sub>" + i + "</sub>" + (mn.getPower() != 1 ?("<sup>" + mn.getPower() + "</sup>"):"")+"&nbsp;";
+            }   
         }
         res += "</html>";
         return res;
     }
     
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
-        String [] coeffTemp = jTextField2.getText().split(",");
-        String [] powersTemp = jTextField1.getText().split(",");
+    void previewPolynomial()
+    {
+        String[] coeffTemp = jTextField2.getText().split(",");
+        String[] powersTemp = jTextField1.getText().split(",");
         Polynomial pn = new Polynomial();
-        
+
         double coTemp;
         int pwTemp;
-        if(coeffTemp.length != powersTemp.length)
+        if (coeffTemp.length != powersTemp.length)
+        {
+            jLabel12.setText("Polynomial is not correct");
+            return;
+        }
+        try
+        {
+            for (int i = 0; i < coeffTemp.length; i++)
+            {
+                coTemp = Double.parseDouble(coeffTemp[i]);
+                pwTemp = Integer.parseInt(powersTemp[i]);
+                pn.add(coTemp, pwTemp);
+            }
+            jLabel12.setText(displayPolynomial(pn));
+        } 
+        catch (Exception ex)
+        {
+            jLabel12.setText("Polynomial is not correct");
+            return;
+        }
+    }
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+        String[] coeffTemp = jTextField2.getText().split(",");
+        String[] powersTemp = jTextField1.getText().split(",");
+        Polynomial pn = new Polynomial();
+
+        double coTemp;
+        int pwTemp;
+        if (coeffTemp.length != powersTemp.length)
         {
             JOptionPane.showMessageDialog(this, "Polynomial is not correct");
             return;
@@ -427,33 +517,35 @@ public class MainForm extends javax.swing.JFrame
                 pwTemp = Integer.parseInt(powersTemp[i]);
                 pn.add(coTemp, pwTemp);
             }
-            jLabel12.setText(displayPolynomial(pn));
-        }
-        catch(Exception ex)
+        } 
+        catch (Exception ex)
         {
             JOptionPane.showMessageDialog(this, "Polynomial is not correct");
             return;
         }
+
+       
+        final boolean resInTable = jCheckBox9.isSelected();
+        
         
         Chromosome.setPolynomial(pn);
         Gene.maxValue = Integer.parseInt(jSpinner6.getValue().toString());
         Gene.minValue = Integer.parseInt(jSpinner5.getValue().toString());
         Gene.points = Integer.parseInt(jSpinner7.getValue().toString());
-        
+
         int generations = Integer.parseInt(jSpinner2.getValue().toString());
         int popSize = Integer.parseInt(jSpinner1.getValue().toString());
-        
+
         int CORate = Integer.parseInt(jSpinner3.getValue().toString());
         int MURate = Integer.parseInt(jSpinner4.getValue().toString());
         int ElitismRate = Integer.parseInt(jSpinner8.getValue().toString());
-        
+
         int tournamentChromosomes = Integer.parseInt(jSpinner9.getValue().toString());
-        
-        double [][] best = new double[maxTypes][generations];
-        double [][] avg = new double[maxTypes][generations];
-        
-        
-        boolean [] checks = new boolean[maxTypes];
+
+        double[][] best = new double[maxTypes][generations];
+        double[][] avg = new double[maxTypes][generations];
+
+        boolean[] checks = new boolean[maxTypes];
         checks[0] = jCheckBox1.isSelected();
         checks[1] = jCheckBox2.isSelected();
         checks[2] = jCheckBox3.isSelected();
@@ -462,15 +554,15 @@ public class MainForm extends javax.swing.JFrame
         checks[5] = jCheckBox6.isSelected();
         checks[6] = jCheckBox7.isSelected();
         checks[7] = jCheckBox8.isSelected();
-        
-        
+
         GeneticAlgorithm ga;
-        
+        String results = "<html>";
+
         for (int j = 0; j < maxTypes; j++)
         {
-            if(checks[j])
+            if (checks[j])
             {
-                switch(j)
+                switch (j)
                 {
                     case 0:
                         Chromosome.setCrossOverType(Chromosome.CO_TYPE_SINGLE_POINT);
@@ -522,204 +614,269 @@ public class MainForm extends javax.swing.JFrame
                     best[j][i] = ga.getBestChromosome().getFitness();
                     avg[j][i] = ga.getFitnessAverage();
                 }//for i
+                results += names[j]+" -> "+textPolynomial(pn, ga.getBestChromosome().getGenesValue())+"<br>";
             }//if
         }//for j
-        
-        /////////////////GUI//////////////////
-        JFrame frame = new JFrame("Chart for Best Fitness");
+        results += "</html>";
+        /////////////////Report//////////////////
         JFXPanel fxPanel = new JFXPanel();
-//        frame.add(fxPanel);
-//        frame.setSize(800, 630);
-//        frame.setVisible(true);
-//        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         
-        
-        JFrame frame2 = new JFrame("Chart for Average Fitness");
-        JFXPanel fxPanel2 = new JFXPanel();
-//        frame2.add(fxPanel2);
-//        frame2.setSize(800, 630);
-//        frame2.setVisible(true);
-//        frame2.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
-        //JPanel panel = new JPanel(null);
-        //fxPanel.setLocation(0, 0);
-        //fxPanel2.setLocation(650, 650);
-        //frame.add(fxPanel);
-        //frame.add(fxPanel2);
-        //frame.setPreferredSize(new Dimension(2000,2000));
-//        frame.add(panel);
-        //frame.setVisible(true);
-        ResultForm rf = new ResultForm(fxPanel);
+        ResultForm rf = new ResultForm(fxPanel,results);
         rf.setVisible(true);
-        
-        Platform.runLater(new Runnable() 
+
+        Platform.runLater(new Runnable()
         {
             @Override
-            public void run() 
+            public void run()
             {
-                Scene scene = createTwoCharts(avg,best,names);
+                Scene scene = createScene(avg, best, names , checks , resInTable);
                 fxPanel.setScene(scene);
-                //Scene scene2 = createChart(avg,names);
-                //fxPanel2.setScene(scene2);
             }
         });
-        
-        
-        
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
     
+    private void jTextField2KeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTextField2KeyReleased
+    {//GEN-HEADEREND:event_jTextField2KeyReleased
+        previewPolynomial();
+    }//GEN-LAST:event_jTextField2KeyReleased
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTextField1KeyReleased
+    {//GEN-HEADEREND:event_jTextField1KeyReleased
+        previewPolynomial();
+    }//GEN-LAST:event_jTextField1KeyReleased
+
     
-    Scene createTwoCharts2(double [][] avg , double [][] best , String [] names)
+//    Scene createTwoCharts2(double[][] avg, double[][] best, String[] names)
+//    {
+//        final Group rootGroup = new Group();
+//        final Scene scene
+//                = new Scene(rootGroup, 800, 400, Color.BEIGE);
+//
+//        final Text text1 = new Text(25, 25, "(2007) JavaFX based on F3");
+//        text1.setFill(Color.CHOCOLATE);
+//        text1.setFont(Font.font(java.awt.Font.SERIF, 25));
+//        rootGroup.getChildren().add(text1);
+//
+//        final Text text2 = new Text(25, 50, "(2010) JavaFX Script Deprecated");
+//        text2.setFill(Color.DARKBLUE);
+//        text2.setFont(Font.font(java.awt.Font.SANS_SERIF, 30));
+//        rootGroup.getChildren().add(text2);
+//
+//        final Text text3 = new Text(25, 75, "(2011) JavaFX to be Open Sourced!");
+//        text3.setFill(Color.TEAL);
+//        text3.setFont(Font.font(java.awt.Font.MONOSPACED, 35));
+//        rootGroup.getChildren().add(text3);
+//
+//        final Text text4 = new Text(25, 125, "(2011) JavaFX to be Standardized");
+//        text4.setFill(Color.CRIMSON);
+//        text4.setFont(Font.font(java.awt.Font.DIALOG, 40));
+//        final Effect glow = new Glow(1.0);
+//        text4.setEffect(glow);
+//        rootGroup.getChildren().add(text4);
+//
+//        final Text text5 = new Text(25, 1005, "(Now) Time for JavaFX 2.0!");
+//        text5.setFill(Color.DARKVIOLET);
+//        text5.setFont(Font.font(java.awt.Font.SERIF, FontWeight.EXTRA_BOLD, 45));
+//        final Light.Distant light = new Light.Distant();
+//        light.setAzimuth(-135.0);
+//        final Lighting lighting = new Lighting();
+//        lighting.setLight(light);
+//        lighting.setSurfaceScale(9.0);
+//        text5.setEffect(lighting);
+//        rootGroup.getChildren().add(text5);
+//
+//        final Text text6 = new Text(25, 225, "JavaFX News at JavaOne!");
+//        text6.setFill(Color.DARKGREEN);
+//        text6.setBlendMode(BlendMode.COLOR_BURN);
+//        text6.setFont(Font.font(java.awt.Font.DIALOG_INPUT, FontWeight.THIN, 45));
+//        final Reflection reflection = new Reflection();
+//        reflection.setFraction(1.0);
+//        text6.setEffect(reflection);
+//        rootGroup.getChildren().add(text6);
+//        return scene;
+//    }
+
+    Scene createScene(double[][] avg, double[][] best, String[] names, boolean [] checked , boolean resInTable )
     {
-        final Group rootGroup = new Group();
-      final Scene scene =
-         new Scene(rootGroup, 800, 400, Color.BEIGE);
- 
-      final Text text1 = new Text(25, 25, "(2007) JavaFX based on F3");
-      text1.setFill(Color.CHOCOLATE);
-      text1.setFont(Font.font(java.awt.Font.SERIF, 25));
-      rootGroup.getChildren().add(text1);
-
-      final Text text2 = new Text(25, 50, "(2010) JavaFX Script Deprecated");
-      text2.setFill(Color.DARKBLUE);
-      text2.setFont(Font.font(java.awt.Font.SANS_SERIF, 30));
-      rootGroup.getChildren().add(text2);
-
-      final Text text3 = new Text(25, 75, "(2011) JavaFX to be Open Sourced!");
-      text3.setFill(Color.TEAL);
-      text3.setFont(Font.font(java.awt.Font.MONOSPACED, 35));
-      rootGroup.getChildren().add(text3);
-
-      final Text text4 = new Text(25, 125, "(2011) JavaFX to be Standardized");
-      text4.setFill(Color.CRIMSON);
-      text4.setFont(Font.font(java.awt.Font.DIALOG, 40));
-      final Effect glow = new Glow(1.0);
-      text4.setEffect(glow);
-      rootGroup.getChildren().add(text4);
-
-      final Text text5 = new Text(25, 1005, "(Now) Time for JavaFX 2.0!");
-      text5.setFill(Color.DARKVIOLET);
-      text5.setFont(Font.font(java.awt.Font.SERIF, FontWeight.EXTRA_BOLD, 45));
-      final Light.Distant light = new Light.Distant();
-      light.setAzimuth(-135.0);
-      final Lighting lighting = new Lighting();
-      lighting.setLight(light);
-      lighting.setSurfaceScale(9.0);
-      text5.setEffect(lighting);
-      rootGroup.getChildren().add(text5);
-
-      final Text text6 = new Text(25, 225, "JavaFX News at JavaOne!");
-      text6.setFill(Color.DARKGREEN);
-      text6.setBlendMode(BlendMode.COLOR_BURN);
-      text6.setFont(Font.font(java.awt.Font.DIALOG_INPUT, FontWeight.THIN, 45));
-      final Reflection reflection = new Reflection();
-      reflection.setFraction(1.0);
-      text6.setEffect(reflection);
-      rootGroup.getChildren().add(text6);
-      return scene;
-    }
-    Scene createTwoCharts(double [][] avg , double [][] best , String [] names)
-    {
-        Group g = createChart(best,names);
-        NumberAxis lineYAxis= new NumberAxis();
+        Group root = createChart(best, names);
+        NumberAxis lineYAxis = new NumberAxis();
         CategoryAxis lineXAxis = new CategoryAxis();
         lineYAxis.setLabel("Fitness");
         lineXAxis.setLabel("Generation");
-        LineChart barChart = new LineChart(lineXAxis,lineYAxis);
+        LineChart barChart = new LineChart(lineXAxis, lineYAxis);
         barChart.setMinSize(800, 600);
         barChart.setCreateSymbols(false);
 
-        XYChart.Series [] bar = new XYChart.Series[names.length];
-        
+        XYChart.Series[] bar = new XYChart.Series[names.length];
+
         for (int j = 0; j < names.length; j++)
         {
             bar[j] = new XYChart.Series<>();
             bar[j].setName(names[j]);
 
-            for (int i = 0; i < avg[j].length ; i++) 
+            for (int i = 0; i < avg[j].length; i++)
             {
-                bar[j].getData().add(getChartData(avg[j][i], ""+(i+1)));
+                bar[j].getData().add(getChartData(avg[j][i], "" + (i + 1)));
             }
             barChart.getData().addAll(bar[j]);
         }
-        
+
         barChart.setLayoutY(700);
+
+        final Text text = new Text(5, 100, "Best Fitness:");
+        text.setFill(Color.DARKVIOLET);
+        text.setFont(Font.font(java.awt.Font.SERIF, FontWeight.EXTRA_BOLD, 30));
+        final Light.Distant light = new Light.Distant();
+        light.setAzimuth(-135.0);
+        final Lighting lighting = new Lighting();
+        lighting.setLight(light);
+        lighting.setSurfaceScale(9.0);
+        text.setEffect(lighting);
+        text.setLayoutY(-55);
+        root.getChildren().add(text);
+
+        final Text text2 = new Text(5, 100, "Aerage Fitness:");
+        text2.setFill(Color.DARKVIOLET);
+        text2.setFont(Font.font(java.awt.Font.SERIF, FontWeight.EXTRA_BOLD, 30));
+        text2.setEffect(lighting);
+        text2.setLayoutY(600);
+        root.getChildren().add(text2);
+
+        root.getChildren().add(barChart);
+
+        TableView table = new TableView();
+        table.setEditable(false);
+        
+        int runTypes = 0;
+        for (int i = 0; i < maxTypes; i++)
+            if(checked[i])
+                runTypes++;
         
         
-      final Text text = new Text(5, 100, "Best Fitness:");
-      text.setFill(Color.DARKVIOLET);
-      text.setFont(Font.font(java.awt.Font.SERIF, FontWeight.EXTRA_BOLD, 30));
-      final Light.Distant light = new Light.Distant();
-      light.setAzimuth(-135.0);
-      final Lighting lighting = new Lighting();
-      lighting.setLight(light);
-      lighting.setSurfaceScale(9.0);
-      text.setEffect(lighting);
-      text.setLayoutY(-55);
-      g.getChildren().add(text);
-      
-      
-      
-      
-      
-      final Text text2 = new Text(5, 100, "Aerage Fitness:");
-      text2.setFill(Color.DARKVIOLET);
-      text2.setFont(Font.font(java.awt.Font.SERIF, FontWeight.EXTRA_BOLD, 30));
-      text2.setEffect(lighting);
-      text2.setLayoutY(600);
-      g.getChildren().add(text2);
+        TableColumn [] mainCols = new TableColumn[runTypes+1];
+        TableColumn [] secondRow = new TableColumn[runTypes*2];
         
-        g.getChildren().add(barChart);
-        Scene  scene  =  new  Scene(g, javafx.scene.paint.Color.ALICEBLUE);
+        String[][] dt = new String[best[0].length][runTypes*2+1];//1 for generation
+        
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(10);
+        for (int i = 0; i < best[0].length; i++)
+        {
+            dt[i][0] = ""+(i+1);
+            for (int j = 0 , k=1; j < maxTypes; j++)
+            {
+               if(checked[j])
+                {
+                    dt[i][k]=df.format(resInTable?1/best[j][i]:best[j][i]);
+                    k++;
+                    dt[i][k]=df.format(resInTable?1/avg[j][i]:avg[j][i]);
+                    k++;
+                } 
+            }
+        }
+        ObservableList<String[]> data = FXCollections.observableArrayList();
+        data.addAll(Arrays.asList(dt));
+
+        mainCols[0] = new TableColumn("#Gen");
+        mainCols[0].setCellValueFactory(new Callback<CellDataFeatures<String[], String>, ObservableValue<String>>()
+        {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<String[], String> p)
+            {
+                return new SimpleStringProperty((p.getValue()[0]));
+            }
+        });
+        for (int i = 0 , j = 0; i < maxTypes; i++)
+        {
+            if(checked[i])
+            {
+                mainCols[j+1] = new TableColumn(names[i]);
+                secondRow[2*j] = new TableColumn("Best Fitness");
+                secondRow[2*j+1] = new TableColumn("Average Fitness");
+                mainCols[j+1].getColumns().addAll(secondRow[2*j] , secondRow[2*j+1]);
+                mainCols[j+1].setMinWidth(120);
+      
+                
+                final int colNo = 2*j+1;
+                final int colNo2 = 2*j+1+1;
+                secondRow[2 * j].setCellValueFactory(new Callback<CellDataFeatures<String[], String>, ObservableValue<String>>()
+                {
+                    @Override
+                    public ObservableValue<String> call(CellDataFeatures<String[], String> p)
+                    {
+                        return new SimpleStringProperty((p.getValue()[colNo]));
+                    }
+                });
+                secondRow[2*j+1].setCellValueFactory(new Callback<CellDataFeatures<String[], String>, ObservableValue<String>>() {
+                    @Override
+                    public ObservableValue<String> call(CellDataFeatures<String[], String> p) {
+                        return new SimpleStringProperty((p.getValue()[colNo2]));
+                    }
+                });
+                
+                j++;
+            }
+        }
+        table.getColumns().addAll((Object[]) mainCols);
+        table.setItems(data);
+
+        
+        table.setLayoutY(1300);
+        table.setLayoutX(50);
+        table.setPrefSize(125*runTypes*2+55, 800);
+        root.getChildren().add(table);
+        
+        
+
+        Scene scene = new Scene(root, javafx.scene.paint.Color.ALICEBLUE);
         return scene;
     }
-    
-    
-    
-    private static XYChart.Data getChartData(double x, String y) 
+
+    private static XYChart.Data getChartData(double x, String y)
     {
         XYChart.Data data = new XYChart.Data<>();
         data.setYValue(x);
         data.setXValue(y);
         return data;
     }
-    
-    private static Group createChart(double [][] inp , String [] names)
+
+    private static Group createChart(double[][] inp, String[] names)
     {
-        Group  root  =  new  Group();
+        Group root = new Group();
         //Scene  scene  =  new  Scene(root, javafx.scene.paint.Color.ALICEBLUE);
 
-
-        NumberAxis lineYAxis= new NumberAxis();
+        NumberAxis lineYAxis = new NumberAxis();
         CategoryAxis lineXAxis = new CategoryAxis();
         lineYAxis.setLabel("Fitness");
         lineXAxis.setLabel("Generation");
-        LineChart barChart = new LineChart(lineXAxis,lineYAxis);
+        LineChart barChart = new LineChart(lineXAxis, lineYAxis);
         barChart.setMinSize(800, 600);
         barChart.setCreateSymbols(false);
 
-        XYChart.Series [] bar = new XYChart.Series[names.length];
-        
+        XYChart.Series[] bar = new XYChart.Series[names.length];
+
         for (int j = 0; j < names.length; j++)
         {
             bar[j] = new XYChart.Series<>();
             bar[j].setName(names[j]);
 
-            for (int i = 0; i < inp[j].length ; i++) 
+            for (int i = 0; i < inp[j].length; i++)
             {
-                bar[j].getData().add(getChartData(inp[j][i], ""+(i+1)));
+                bar[j].getData().add(getChartData(inp[j][i], "" + (i + 1)));
             }
             barChart.getData().addAll(bar[j]);
         }
-        
+
         barChart.setLayoutY(40);
         root.getChildren().add(barChart);
-        
+
         //return (scene);
         return root;
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -731,6 +888,7 @@ public class MainForm extends javax.swing.JFrame
     private javax.swing.JCheckBox jCheckBox6;
     private javax.swing.JCheckBox jCheckBox7;
     private javax.swing.JCheckBox jCheckBox8;
+    private javax.swing.JCheckBox jCheckBox9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

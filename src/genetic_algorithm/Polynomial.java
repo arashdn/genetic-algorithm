@@ -20,7 +20,7 @@ class Mononomial
     {
         this.power = power;
         this.coefficient = coefficient;
-        this.name = "x";
+        this.name = "X";
     }
     
     public Mononomial()
