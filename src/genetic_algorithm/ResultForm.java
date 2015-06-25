@@ -22,6 +22,7 @@ public class ResultForm extends javax.swing.JFrame
     public ResultForm(JFXPanel panel , String result)
     {
         initComponents();
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
         jLabel1.setText(result);
         jScrollPane1.setViewportView(panel);
         
