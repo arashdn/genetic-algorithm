@@ -23,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.util.Callback;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -31,9 +32,7 @@ import javax.swing.JOptionPane;
 public class MainForm extends javax.swing.JFrame
 {
 
-    /**
-     * Creates new form MainForm
-     */
+
     final int maxTypes = 8;
     String[] names;
 
@@ -99,6 +98,11 @@ public class MainForm extends javax.swing.JFrame
         jSpinner7 = new javax.swing.JSpinner();
         jCheckBox9 = new javax.swing.JCheckBox();
         jLabel12 = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jProgressBar2 = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -247,7 +251,7 @@ public class MainForm extends javax.swing.JFrame
                     .addComponent(jCheckBox6)
                     .addComponent(jCheckBox7)
                     .addComponent(jCheckBox8))
-                .addGap(0, 182, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,6 +377,14 @@ public class MainForm extends javax.swing.JFrame
 
         jLabel12.setText("Equation");
 
+        jProgressBar1.setToolTipText("");
+
+        jLabel13.setText("Stage 0/0");
+
+        jLabel14.setText("Current:");
+
+        jLabel15.setText("Total:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -387,12 +399,28 @@ public class MainForm extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(41, 41, 41))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jButton1))
+                                    .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
-                .addGap(41, 41, 41))
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(42, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -404,11 +432,22 @@ public class MainForm extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel12))
-                .addGap(14, 14, 14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14)
+                            .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
+                            .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -496,8 +535,29 @@ public class MainForm extends javax.swing.JFrame
         }
     }
     
+    
+    
+    private class Task extends Thread 
+    {    
+      public Task()
+      {
+          
+      }
+
+      public void run()
+      {
+         execute();
+      }
+   }   
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
+        Task task = new Task();                
+        task.start();
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void execute()                                         
+    {                                             
         String[] coeffTemp = jTextField2.getText().split(",");
         String[] powersTemp = jTextField1.getText().split(",");
         Polynomial pn = new Polynomial();
@@ -524,7 +584,7 @@ public class MainForm extends javax.swing.JFrame
             return;
         }
 
-       
+        
         final boolean resInTable = jCheckBox9.isSelected();
         
         
@@ -554,6 +614,18 @@ public class MainForm extends javax.swing.JFrame
         checks[5] = jCheckBox6.isSelected();
         checks[6] = jCheckBox7.isSelected();
         checks[7] = jCheckBox8.isSelected();
+        
+        
+        
+        
+        int runTypes = 0;
+        for (int i = 0; i < maxTypes; i++)
+            if(checks[i])
+                runTypes++;
+        final int totalRuns = runTypes*generations;
+        int totalRunCounter = 0;
+        int currentRunCounter;
+        int currentStage = 0;
 
         GeneticAlgorithm ga;
         String results = "<html>";
@@ -562,6 +634,7 @@ public class MainForm extends javax.swing.JFrame
         {
             if (checks[j])
             {
+                currentStage++;
                 switch (j)
                 {
                     case 0:
@@ -607,12 +680,18 @@ public class MainForm extends javax.swing.JFrame
                 }
 
                 ga = new GeneticAlgorithm(popSize, CORate, MURate, ElitismRate, tournamentChromosomes);
-
+                currentRunCounter = 0;
                 for (int i = 0; i < generations; i++)
                 {
                     ga.repeat();
+                    currentRunCounter++;
+                    totalRunCounter++;
+                    jProgressBar1.setValue((int)((double)currentRunCounter*100/(double)generations));
+                    jProgressBar2.setValue((int)((double)totalRunCounter*100/(double)totalRuns));
                     best[j][i] = ga.getBestChromosome().getFitness();
                     avg[j][i] = ga.getFitnessAverage();
+                    jLabel13.setText("<html>Stage&nbsp;"+currentStage+"/"+runTypes+"<br>"+"Generation&nbsp;"+(currentRunCounter+1)+"/"+generations+
+                            "<br>Best&nbsp;Fitness:&nbsp;"+best[j][i]+"<br>Average&nbsp;Fitness:&nbsp;"+avg[j][i]+"</html>");
                 }//for i
                 results += names[j]+" -> "+textPolynomial(pn, ga.getBestChromosome().getGenesValue())+"<br>";
             }//if
@@ -635,8 +714,7 @@ public class MainForm extends javax.swing.JFrame
         });
 
 
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    } 
     
     private void jTextField2KeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTextField2KeyReleased
     {//GEN-HEADEREND:event_jTextField2KeyReleased
@@ -893,6 +971,9 @@ public class MainForm extends javax.swing.JFrame
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -905,6 +986,8 @@ public class MainForm extends javax.swing.JFrame
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JProgressBar jProgressBar2;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSpinner jSpinner2;
     private javax.swing.JSpinner jSpinner3;
