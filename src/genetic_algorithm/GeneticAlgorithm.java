@@ -298,7 +298,7 @@ public class GeneticAlgorithm
         //System.out.println("\n--------------------------------------------\nRepeat: "+repeatCount);
         
         Arrays.sort(currentGeneration,Collections.reverseOrder());
-        System.out.println(this.toString());
+        //System.out.println(this.toString());
         int elitism = (populationSize*elitismRate)/100;
         //System.out.println("elitisim count: "+elitism);
         //System.out.println("current:  "+this.toString());

@@ -133,8 +133,8 @@ public class MainForm extends javax.swing.JFrame
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSpinner2, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
-                            .addComponent(jSpinner1)))
+                            .addComponent(jSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                            .addComponent(jSpinner2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -174,7 +174,7 @@ public class MainForm extends javax.swing.JFrame
 
         jLabel3.setText("Crossover Probability(%)");
 
-        jSpinner3.setValue(85);
+        jSpinner3.setValue(80);
 
         jSpinner4.setValue(20);
 
@@ -694,6 +694,9 @@ public class MainForm extends javax.swing.JFrame
 
                 ga = new GeneticAlgorithm(popSize, CORate, MURate, ElitismRate, tournamentChromosomes);
                 currentRunCounter = 0;
+                DecimalFormat df = new DecimalFormat("#");
+                df.setMinimumIntegerDigits(1);
+                df.setMaximumFractionDigits(12);
                 for (int i = 0; i < generations; i++)
                 {
                     ga.repeat();
@@ -704,7 +707,7 @@ public class MainForm extends javax.swing.JFrame
                     best[j][i] = ga.getBestChromosome().getFitness();
                     avg[j][i] = ga.getFitnessAverage();
                     jLabel13.setText("<html>Stage&nbsp;"+currentStage+"/"+runTypes+" : "+names[j]+"<br>"+"Generation&nbsp;"+currentRunCounter+"/"+generations+
-                            "<br>Best&nbsp;Fitness:&nbsp;"+best[j][i]+"<br>Average&nbsp;Fitness:&nbsp;"+avg[j][i]+"</html>");
+                            "<br>Best&nbsp;Fitness:&nbsp;"+df.format(best[j][i])+"<br>Average&nbsp;Fitness:&nbsp;"+df.format(avg[j][i])+"</html>");
                 }//for i
                 results += names[j]+" -> "+textPolynomial(pn, ga.getBestChromosome().getGenesValue())+"<br>";
             }//if
