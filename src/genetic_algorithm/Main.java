@@ -1,12 +1,5 @@
 package genetic_algorithm;
 
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.chart.*;
-import javax.swing.JFrame;
-
 /**
  *
  * @author Arash

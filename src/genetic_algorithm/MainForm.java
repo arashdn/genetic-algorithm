@@ -5,7 +5,14 @@
  */
 package genetic_algorithm;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,7 +29,10 @@ import javafx.scene.effect.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.util.Callback;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 /**
@@ -39,6 +49,235 @@ public class MainForm extends javax.swing.JFrame
     Task task = null;
     
     
+    
+    
+    ArrayList<JTextField> equPowers;
+    ArrayList<JTextField> equCoeff;
+    ArrayList<JLabel> equVars;
+    JPanel equPan;
+    final int equPowY = 0;
+    final int equCoeffY = 25;
+    int equOffset = 100;
+    
+    final void resetPolynomial()
+    {
+        equPowers = new ArrayList<>();
+        equCoeff = new ArrayList<>();
+        equVars = new ArrayList<>();
+        equPan = new JPanel(null);
+        equPan.setPreferredSize(new Dimension(1000, 80));
+        jScrollPane1.setViewportView(equPan);
+        addMonoNomial();
+        
+    }
+    void removeMonoNomial(int res)
+    {
+        equPan.remove(equPowers.get(res));
+        equPowers.remove(res);
+        equPan.remove(equCoeff.get(res));
+        equCoeff.remove(res);
+        equPan.remove(equVars.get(res));
+        equVars.remove(res);
+        
+        for (int i = res; i < equPowers.size(); i++)
+        {
+            equPowers.get(i).setLocation(equPowers.get(i).getLocation().x-equOffset, equPowers.get(i).getLocation().y);
+            equCoeff.get(i).setLocation(equCoeff.get(i).getLocation().x-equOffset, equCoeff.get(i).getLocation().y);
+            equVars.get(i).setLocation(equVars.get(i).getLocation().x-equOffset, equVars.get(i).getLocation().y);
+            equVars.get(i).setText("<html><font size=\"6\">X<sub>"+(i+1)+"</sub>&nbsp;+&nbsp;</font></html>");
+        }
+        equCoeff.get(res-1).requestFocus();
+        equPan.updateUI();
+    }
+    
+    
+    final void addMonoNomial()
+    {
+        addMonoNomial(equPowers.size());
+    }
+    final void addMonoNomial(int res)
+    {
+        JTextField temp1 = new JTextField("1");
+        temp1.setLocation((res)*equOffset+55, equPowY);
+        temp1.setSize(30, 30);
+        
+        temp1.addKeyListener(new KeyListener()
+        {
+
+            @Override
+            public void keyTyped(KeyEvent e)
+            {
+                char ch = e.getKeyChar();
+
+                if (!(ch >= '0' && ch <= '9') && ch != '.' && ch!='-' && ch!='+' && ch != '\b') 
+                {
+                    e.consume();
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e)
+            {
+                generatePolyNomial();
+                if(e.getKeyCode()==157)
+                {
+                    if (equPowers.size() == 1)
+                        return;
+                    int res = equPowers.lastIndexOf(e.getSource());
+                    removeMonoNomial(res);
+                }
+                else if(e.getKeyCode()==10)
+                {
+                    int res = equPowers.lastIndexOf(e.getSource());
+                    addMonoNomial(res+1);
+                }
+                else if(e.getKeyCode()==16 || e.getKeyCode() == e.VK_TAB)
+                {
+                    int res = equPowers.lastIndexOf(e.getSource());
+                    if(res<equCoeff.size()-1)
+                    {
+                        equCoeff.get(res+1).requestFocus();
+                    }
+                }
+            }
+        });
+        
+        temp1.addFocusListener(new FocusListener()
+        {
+
+            @Override
+            public void focusGained(FocusEvent e)
+            {
+                JTextField t = (JTextField) e.getSource();
+                t.selectAll();
+                generatePolyNomial();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e)
+            {
+                generatePolyNomial();
+            }
+        });
+        
+        equPowers.add(res,temp1);
+        JTextField temp2 = new JTextField("0");
+        temp2.setLocation((res)*equOffset, equCoeffY);
+        temp2.setSize(40, 40);
+        
+        
+        temp2.addKeyListener(new KeyListener()
+        {
+
+            @Override
+            public void keyTyped(KeyEvent e)
+            {
+                char ch = e.getKeyChar();
+
+                if (!(ch >= '0' && ch <= '9') && ch != '.' && ch!='-' && ch!='+' && ch != '\b') 
+                {
+                    e.consume();
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e)
+            {
+                generatePolyNomial();
+                if(e.getKeyCode()==157)
+                {
+                    if (equCoeff.size() == 1)
+                        return;
+                    int res = equCoeff.lastIndexOf(e.getSource());
+                    removeMonoNomial(res);
+                }
+                else if(e.getKeyCode()==10)
+                {
+                    int res = equCoeff.lastIndexOf(e.getSource());
+                    addMonoNomial(res+1);
+                }
+                else if(e.getKeyCode()==16)
+                {
+                    int res = equCoeff.lastIndexOf(e.getSource());
+                    equPowers.get(res).requestFocus();
+                    
+                }
+            }
+        });
+        
+        temp2.addFocusListener(new FocusListener()
+        {
+
+            @Override
+            public void focusGained(FocusEvent e)
+            {
+                JTextField t = (JTextField) e.getSource();
+                t.selectAll();
+                generatePolyNomial();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e)
+            {
+                generatePolyNomial();
+            }
+        });
+        
+        equCoeff.add(res,temp2);
+        
+        
+        JLabel temp3 = new JLabel("<html><font size=\"6\">X<sub>"+(res+1)+"</sub>&nbsp;+&nbsp;</font></html>");
+        
+        temp3.setSize(80, 40);
+        temp3.setLocation((res)*equOffset+44, equCoeffY);
+        equVars.add(res,temp3);
+        
+        
+        equPan.add(equPowers.get(res));
+        equPan.add(equCoeff.get(res));
+        equPan.add(equVars.get(res));
+        
+        
+        for (int i = res+1; i < equPowers.size(); i++)
+        {
+            equPowers.get(i).setLocation(equPowers.get(i).getLocation().x+equOffset, equPowers.get(i).getLocation().y);
+            equCoeff.get(i).setLocation(equCoeff.get(i).getLocation().x+equOffset, equCoeff.get(i).getLocation().y);
+            equVars.get(i).setLocation(equVars.get(i).getLocation().x+equOffset, equVars.get(i).getLocation().y);
+            equVars.get(i).setText("<html><font size=\"6\">X<sub>"+(i+1)+"</sub>&nbsp;+&nbsp;</font></html>");
+        }
+        
+        equCoeff.get(res).requestFocus();
+        
+        
+        equPan.updateUI();
+    }
+    
+     void generatePolyNomial()
+     {
+         String pow = "";
+         String coeff = "";
+         
+         for (int i = 0; i < equCoeff.size(); i++)
+         {
+             coeff += equCoeff.get(i).getText() + ",";
+             pow += equPowers.get(i).getText() + ",";
+         }
+         jTextField1.setText(pow);
+         jTextField2.setText(coeff);
+         previewPolynomial();
+     }
+    
     public MainForm()
     {
         initComponents();
@@ -52,6 +291,7 @@ public class MainForm extends javax.swing.JFrame
         jCheckBox7.setText(names[6] = "Double CO - Roulete - Allow Repetitive");
         jCheckBox8.setText(names[7] = "Double CO - Roulete - NOT Repetitive");
         previewPolynomial();
+        changeAutoEqu(jCheckBox11.isSelected());
     }
 
     /**
@@ -111,6 +351,9 @@ public class MainForm extends javax.swing.JFrame
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jProgressBar2 = new javax.swing.JProgressBar();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jCheckBox11 = new javax.swing.JCheckBox();
+        jLabel18 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -312,9 +555,9 @@ public class MainForm extends javax.swing.JFrame
                 .addComponent(jCheckBox6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox8)
-                .addContainerGap())
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -343,9 +586,9 @@ public class MainForm extends javax.swing.JFrame
 
         jLabel5.setText("Min Cofficent value:");
 
-        jSpinner5.setValue(-100);
+        jSpinner5.setValue(-40);
 
-        jSpinner6.setValue(100);
+        jSpinner6.setValue(40);
 
         jLabel6.setText("Max Cofficent value:");
 
@@ -428,6 +671,24 @@ public class MainForm extends javax.swing.JFrame
 
         jLabel15.setText("Total:");
 
+        jCheckBox11.setLabel("Auto Equation Generator");
+        jCheckBox11.addChangeListener(new javax.swing.event.ChangeListener()
+        {
+            public void stateChanged(javax.swing.event.ChangeEvent evt)
+            {
+                jCheckBox11StateChanged(evt);
+            }
+        });
+        jCheckBox11.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jCheckBox11ActionPerformed(evt);
+            }
+        });
+
+        jLabel18.setText("<html>Press Enter to add<br>Ctrl to Remove<br>Shift to move");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -441,27 +702,40 @@ public class MainForm extends javax.swing.JFrame
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(41, 41, 41))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel14)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(41, 41, 41))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton1)
-                                    .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jScrollPane1)
+                                        .addGap(35, 35, 35))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jCheckBox11)
+                                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addContainerGap(149, Short.MAX_VALUE))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel14)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel15)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jButton1)
+                                            .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -472,7 +746,13 @@ public class MainForm extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jCheckBox11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -546,7 +826,7 @@ public class MainForm extends javax.swing.JFrame
         return res;
     }
     
-    void previewPolynomial()
+    final void previewPolynomial()
     {
         String[] coeffTemp = jTextField2.getText().split(",");
         String[] powersTemp = jTextField1.getText().split(",");
@@ -661,7 +941,7 @@ public class MainForm extends javax.swing.JFrame
         double[][] avg = new double[maxTypes][generations];
         
         
-        boolean continueOnresult = jCheckBox9.isSelected();
+        boolean continueOnresult = jCheckBox10.isSelected();
         double resultValue = Double.parseDouble(jSpinner10.getValue().toString());
         infinityValue = Double.parseDouble(jSpinner11.getValue().toString());
 
@@ -797,6 +1077,27 @@ public class MainForm extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jTextField1KeyReleased
         previewPolynomial();
     }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jCheckBox11StateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_jCheckBox11StateChanged
+    {//GEN-HEADEREND:event_jCheckBox11StateChanged
+        
+        
+    }//GEN-LAST:event_jCheckBox11StateChanged
+
+    final void changeAutoEqu(boolean enable)
+    {
+        jTextField1.setEnabled(!enable);
+        jTextField2.setEnabled(!enable);
+        jScrollPane1.setVisible(enable);
+        jLabel18.setVisible(enable);
+        resetPolynomial();
+        
+    }
+    private void jCheckBox11ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jCheckBox11ActionPerformed
+    {//GEN-HEADEREND:event_jCheckBox11ActionPerformed
+        
+        changeAutoEqu(jCheckBox11.isSelected());
+    }//GEN-LAST:event_jCheckBox11ActionPerformed
 
     
 //    Scene createTwoCharts2(double[][] avg, double[][] best, String[] names)
@@ -1032,6 +1333,7 @@ public class MainForm extends javax.swing.JFrame
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox10;
+    private javax.swing.JCheckBox jCheckBox11;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
@@ -1049,6 +1351,7 @@ public class MainForm extends javax.swing.JFrame
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1063,6 +1366,7 @@ public class MainForm extends javax.swing.JFrame
     private javax.swing.JPanel jPanel4;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JProgressBar jProgressBar2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSpinner jSpinner10;
     private javax.swing.JSpinner jSpinner11;
