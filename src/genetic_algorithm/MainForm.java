@@ -758,8 +758,10 @@ public class MainForm extends javax.swing.JFrame
                     if( continueOnresult && best[j][i] >= resultValue)
                     {
                         for (int k = i+1; k < generations; k++)
+                        {
                             best[j][k] = avg[j][k] = best[j][i];
-                        
+                            totalRunCounter++;
+                        }
                         break;
                     }//if result
                 }//for i
