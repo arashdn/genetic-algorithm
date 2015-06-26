@@ -35,7 +35,10 @@ public class MainForm extends javax.swing.JFrame
 
     final int maxTypes = 8;
     String[] names;
-
+    double infinityValue = 1000;//1000 only for initilize , will be changed
+    Task task = null;
+    
+    
     public MainForm()
     {
         initComponents();
@@ -68,6 +71,8 @@ public class MainForm extends javax.swing.JFrame
         jSpinner2 = new javax.swing.JSpinner();
         jLabel9 = new javax.swing.JLabel();
         jSpinner9 = new javax.swing.JSpinner();
+        jCheckBox10 = new javax.swing.JCheckBox();
+        jSpinner10 = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -76,6 +81,9 @@ public class MainForm extends javax.swing.JFrame
         jSpinner4 = new javax.swing.JSpinner();
         jSpinner8 = new javax.swing.JSpinner();
         jLabel8 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jSpinner11 = new javax.swing.JSpinner();
+        jLabel17 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
@@ -120,26 +128,38 @@ public class MainForm extends javax.swing.JFrame
 
         jSpinner9.setValue(30);
 
+        jCheckBox10.setSelected(true);
+        jCheckBox10.setText("Stop if Fitness larger than");
+
+        jSpinner10.setValue(100);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                            .addComponent(jSpinner2)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                                    .addComponent(jSpinner2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jSpinner9))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jCheckBox10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSpinner9, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(147, Short.MAX_VALUE))
+                        .addComponent(jSpinner10, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(126, 126, 126))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,7 +176,11 @@ public class MainForm extends javax.swing.JFrame
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jSpinner9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBox10)
+                    .addComponent(jSpinner10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jButton1.setText("Run");
@@ -182,6 +206,12 @@ public class MainForm extends javax.swing.JFrame
 
         jLabel8.setText("Elitisim Ratio(%)");
 
+        jLabel16.setText("Display Infinity as ");
+
+        jSpinner11.setValue(100);
+
+        jLabel17.setText("in charts");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -198,6 +228,13 @@ public class MainForm extends javax.swing.JFrame
                     .addComponent(jSpinner3)
                     .addComponent(jSpinner4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSpinner11, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel17)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,7 +251,12 @@ public class MainForm extends javax.swing.JFrame
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jSpinner8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(jSpinner11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -446,7 +488,7 @@ public class MainForm extends javax.swing.JFrame
                             .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1)))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -548,7 +590,7 @@ public class MainForm extends javax.swing.JFrame
          execute();
       }
    }  
-    Task task = null;
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
         if(task == null)
@@ -617,6 +659,11 @@ public class MainForm extends javax.swing.JFrame
 
         double[][] best = new double[maxTypes][generations];
         double[][] avg = new double[maxTypes][generations];
+        
+        
+        boolean continueOnresult = jCheckBox9.isSelected();
+        double resultValue = Double.parseDouble(jSpinner10.getValue().toString());
+        infinityValue = Double.parseDouble(jSpinner11.getValue().toString());
 
         boolean[] checks = new boolean[maxTypes];
         checks[0] = jCheckBox1.isSelected();
@@ -708,6 +755,13 @@ public class MainForm extends javax.swing.JFrame
                     avg[j][i] = ga.getFitnessAverage();
                     jLabel13.setText("<html>Stage&nbsp;"+currentStage+"/"+runTypes+" : "+names[j]+"<br>"+"Generation&nbsp;"+currentRunCounter+"/"+generations+
                             "<br>Best&nbsp;Fitness:&nbsp;"+df.format(best[j][i])+"<br>Average&nbsp;Fitness:&nbsp;"+df.format(avg[j][i])+"</html>");
+                    if( continueOnresult && best[j][i] >= resultValue)
+                    {
+                        for (int k = i+1; k < generations; k++)
+                            best[j][k] = avg[j][k] = best[j][i];
+                        
+                        break;
+                    }//if result
                 }//for i
                 results += names[j]+" -> "+textPolynomial(pn, ga.getBestChromosome().getGenesValue())+"<br>";
             }//if
@@ -813,7 +867,7 @@ public class MainForm extends javax.swing.JFrame
 
             for (int i = 0; i < avg[j].length; i++)
             {
-                bar[j].getData().add(getChartData(avg[j][i], "" + (i + 1)));
+                bar[j].getData().add(getChartData(avg[j][i]==Double.POSITIVE_INFINITY?infinityValue:avg[j][i] , "" + (i + 1)));
             }
             barChart.getData().addAll(bar[j]);
         }
@@ -937,7 +991,7 @@ public class MainForm extends javax.swing.JFrame
         return data;
     }
 
-    private static Group createChart(double[][] inp, String[] names)
+    private Group createChart(double[][] inp, String[] names)
     {
         Group root = new Group();
         //Scene  scene  =  new  Scene(root, javafx.scene.paint.Color.ALICEBLUE);
@@ -959,7 +1013,7 @@ public class MainForm extends javax.swing.JFrame
 
             for (int i = 0; i < inp[j].length; i++)
             {
-                bar[j].getData().add(getChartData(inp[j][i], "" + (i + 1)));
+                bar[j].getData().add(getChartData(inp[j][i]==Double.POSITIVE_INFINITY?infinityValue:inp[j][i], "" + (i + 1)));
             }
             barChart.getData().addAll(bar[j]);
         }
@@ -975,6 +1029,7 @@ public class MainForm extends javax.swing.JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox10;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
@@ -990,6 +1045,8 @@ public class MainForm extends javax.swing.JFrame
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1005,6 +1062,8 @@ public class MainForm extends javax.swing.JFrame
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JProgressBar jProgressBar2;
     private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSpinner jSpinner10;
+    private javax.swing.JSpinner jSpinner11;
     private javax.swing.JSpinner jSpinner2;
     private javax.swing.JSpinner jSpinner3;
     private javax.swing.JSpinner jSpinner4;
